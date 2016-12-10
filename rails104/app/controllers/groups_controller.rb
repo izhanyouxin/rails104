@@ -22,6 +22,7 @@ def create
    @group.user = current_user
 
    if @group.save
+     current_user.join!(@group)
      redirect_to groups_path
    else
      render :new
@@ -51,6 +52,7 @@ def join
     flash[:notice] = "加入本讨论版成功"
   else
     flash[:warning] = "你已经是本讨论版成员了！"
+  end
   redirect_to group_path(@group)
   end
 
@@ -66,6 +68,7 @@ else
   redirect_to group_path(@group)
 end
 
+
 private
 def find_group_and_check_permission
   @group = Group.find(params[:id])
@@ -76,6 +79,5 @@ end
 
 def group_params
   params.require(:group).permit(:title, :description)
-end
 end
 end
